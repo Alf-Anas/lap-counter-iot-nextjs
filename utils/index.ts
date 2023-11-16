@@ -43,25 +43,3 @@ export function getValObject(obj: any, key = "", defaultValue: any = "") {
     }
     return defaultValue;
 }
-
-function splitArray(array: any[], chunkSize: number) {
-    const result = [];
-    for (let i = 0; i < array.length; i += chunkSize) {
-        result.push(array.slice(i, i + chunkSize));
-    }
-    return result;
-}
-
-function transposeArray(array: any[][]) {
-    return array[0].map((_col, i) => array.map((row) => row[i]));
-}
-
-export function generateRowGrid(arrayData: any[], row: number, col: number) {
-    const listSplit = splitArray(arrayData, row);
-
-    const transposedArray = transposeArray(listSplit);
-
-    const flattenedArray = transposedArray.flat();
-
-    return flattenedArray;
-}
