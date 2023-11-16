@@ -45,7 +45,7 @@ export default function StatsCard() {
                     key={i}
                     className="rounded-none text-sm block text-start h-[22px]"
                 >
-                    {i + 1}
+                    {i}
                 </Tag>,
                 <Tag
                     key={i + "X"}
@@ -95,6 +95,12 @@ export default function StatsCard() {
                 listLane.push(
                     <Tag
                         key={idx + "Y"}
+                        className="rounded-none text-sm block text-end h-[22px]"
+                    >
+                        -
+                    </Tag>,
+                    <Tag
+                        key={idx + "YY"}
                         className="rounded-none text-sm block text-end h-[22px] font-bold"
                     >
                         μ : {(diffSecond / idx).toFixed(3)} ms
