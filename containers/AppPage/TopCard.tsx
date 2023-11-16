@@ -35,7 +35,6 @@ export default function TopCard() {
                 onConfirm={() => {
                     setActiveData(ACTIVE_DATA_INITIAL);
                     setRefresh(new Date().getTime());
-                    setRefresh(new Date().getTime() + 1);
                 }}
                 okText="Yes"
                 cancelText="No"

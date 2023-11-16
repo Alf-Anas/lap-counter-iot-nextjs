@@ -180,7 +180,7 @@ export default function ContentCard() {
         return () => {
             client.off("message", handleReceivedMessage);
         };
-    }, [client, activeLane]);
+    }, [client, activeLane, refresh]);
 
     return (
         <>
