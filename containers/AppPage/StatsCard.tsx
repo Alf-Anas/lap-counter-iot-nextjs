@@ -90,6 +90,17 @@ export default function StatsCard() {
                     {label}
                 </Tag>
             );
+
+            if (idx !== 0 && idx === thisData.length - 1) {
+                listLane.push(
+                    <Tag
+                        key={idx + "Y"}
+                        className="rounded-none text-sm block text-end h-[22px] font-bold"
+                    >
+                        μ : {(diffSecond / idx).toFixed(3)} ms
+                    </Tag>
+                );
+            }
         });
 
         return listLane;
