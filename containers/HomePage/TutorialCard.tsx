@@ -1,6 +1,6 @@
 import MainCard from "@/components/layout/MainCard";
 import { Button, Typography } from "antd";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function TutorialCard() {
     const router = useRouter();
