@@ -1,6 +1,6 @@
 {
-    "name": "geoit-dev",
-    "version": "2.0.0",
+    "name": "lap-counter-mini-4wd",
+    "version": "1.0.0",
     "private": true,
     "scripts": {
         "dev": "next dev",

@@ -37,6 +37,24 @@ function removeCarFromLane(carName: string) {
     return updatedLaneCarData as LaneCarDataType;
 }
 
+function findAndAddCarToLane(carName: string) {
+    const redCar = laneCarData.a.find((item) => item === carName);
+    const greenCar = laneCarData.b.find((item) => item === carName);
+    const blueCar = laneCarData.c.find((item) => item === carName);
+
+    if (!redCar && !greenCar && !blueCar) {
+        if (carName === CAR_NAME.RED) {
+            laneCarData.a.push(carName);
+        } else if (carName === CAR_NAME.GREEN) {
+            laneCarData.b.push(carName);
+        } else if (carName === CAR_NAME.BLUE) {
+            laneCarData.c.push(carName);
+        }
+    }
+
+    return JSON.parse(JSON.stringify(laneCarData)) as LaneCarDataType;
+}
+
 export default function ContentCard() {
     const [apiNotification, contextHolder] = notification.useNotification();
     const { activeTab, setActiveData, activeLane, refresh } =
@@ -73,12 +91,18 @@ export default function ContentCard() {
     useEffect(() => {
         if (!activeLane.a) {
             laneCarData = removeCarFromLane(CAR_NAME.RED);
+        } else {
+            laneCarData = findAndAddCarToLane(CAR_NAME.RED);
         }
         if (!activeLane.b) {
             laneCarData = removeCarFromLane(CAR_NAME.GREEN);
+        } else {
+            laneCarData = findAndAddCarToLane(CAR_NAME.GREEN);
         }
         if (!activeLane.c) {
             laneCarData = removeCarFromLane(CAR_NAME.BLUE);
+        } else {
+            laneCarData = findAndAddCarToLane(CAR_NAME.BLUE);
         }
     }, [activeLane]);
 
