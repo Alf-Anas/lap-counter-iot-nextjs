@@ -1,7 +1,6 @@
 import { Layout as LayoutANTD } from "antd";
 import React, { ReactNode } from "react";
 import MainHeader from "./MainHeader";
-import MainFooter from "./MainFooter";
 
 const { Content } = LayoutANTD;
 
@@ -14,7 +13,6 @@ export default function AppLayout({ children }: Props) {
                     {children}
                 </Content>
             </LayoutANTD>
-            {/* <MainFooter /> */}
         </LayoutANTD>
     );
 }

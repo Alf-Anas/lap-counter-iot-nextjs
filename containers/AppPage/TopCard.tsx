@@ -10,7 +10,8 @@ export const TABS_KEY = {
 };
 
 export default function TopCard() {
-    const { activeTab, setActiveTab, setActiveData } = useContext(AppContext);
+    const { activeTab, setActiveTab, setActiveData, setRefresh } =
+        useContext(AppContext);
 
     return (
         <MainCard className="text-center !p-2 justify-between flex">
@@ -31,7 +32,10 @@ export default function TopCard() {
             <Popconfirm
                 title="Clear Data"
                 description="Clear data dan record ulang?"
-                onConfirm={() => setActiveData(ACTIVE_DATA_INITIAL)}
+                onConfirm={() => {
+                    setActiveData(ACTIVE_DATA_INITIAL);
+                    setRefresh(new Date().getTime());
+                }}
                 okText="Yes"
                 cancelText="No"
                 placement="bottomRight"

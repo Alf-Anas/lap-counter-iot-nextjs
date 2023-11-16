@@ -1,8 +1,6 @@
 import MainCard from "@/components/layout/MainCard";
-import MyImage from "@/components/preview/MyImage";
-import { UndoOutlined } from "@ant-design/icons";
-import { Button, Col, Popconfirm, Radio, Row, Tag, Typography } from "antd";
-import { ReactNode, useContext, useEffect } from "react";
+import { Col, Row, Tag } from "antd";
+import { ReactNode, useContext } from "react";
 import { AppContext, CAR_NAME, getCarColor } from ".";
 
 export const TABS_KEY = {
@@ -48,6 +46,12 @@ export default function StatsCard() {
                     className="rounded-none text-sm block text-start h-[22px]"
                 >
                     {i + 1}
+                </Tag>,
+                <Tag
+                    key={i + "X"}
+                    className="rounded-none text-sm block text-start h-[22px]"
+                >
+                    -
                 </Tag>
             );
         }
@@ -57,18 +61,30 @@ export default function StatsCard() {
 
     function getCarStats(carName: string) {
         const listLane: ReactNode[] = [];
-        const thisData = allItem.filter((item) => item.car === carName);
+        const thisData = allItem
+            .filter((item) => item.car === carName)
+            .sort((itemA, itemB) => itemA.time - itemB.time);
 
         thisData.forEach((item, idx) => {
             const diffSecond = (item.time - lowestValue) / 1000;
             const prefDiffSecond =
-                idx !== 0 ? (thisData[idx - 1].time - lowestValue) / 1000 : 0;
+                idx !== 0 ? (item.time - thisData[idx - 1].time) / 1000 : 0;
             const label = diffSecond.toFixed(3);
 
+            if (idx !== 0) {
+                listLane.push(
+                    <Tag
+                        key={idx}
+                        className="rounded-none text-sm block text-end h-[22px]"
+                    >
+                        {prefDiffSecond.toFixed(3)} ms
+                    </Tag>
+                );
+            }
             listLane.push(
                 <Tag
-                    key={idx}
-                    // color={getCarColor(item.car)}
+                    key={idx + "X"}
+                    color={getCarColor(item.car)}
                     className="rounded-none text-sm block text-end h-[22px]"
                 >
                     {label}
@@ -81,12 +97,6 @@ export default function StatsCard() {
 
     return (
         <MainCard className="text-center">
-            {/* <ol>
-                <li>Coffee</li>
-                <li>Tea</li>
-                <li>Milk</li>
-            </ol> */}
-
             <Row gutter={[0, 0]} className="min-h-[50vh]">
                 <Col span={3}>
                     <Tag className="text-base block text-center">LAP</Tag>

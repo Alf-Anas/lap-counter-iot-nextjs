@@ -1,15 +1,8 @@
-import MainCard from "@/components/layout/MainCard";
-import { Button, Tabs, TabsProps, Tag, Typography, notification } from "antd";
+import { notification } from "antd";
 import mqtt, { MqttClient } from "mqtt";
 import { useContext, useEffect, useState } from "react";
 import LapsCard from "./LapsCard";
-import {
-    ACTIVE_DATA_INITIAL,
-    ActiveDataItemType,
-    ActiveDataType,
-    AppContext,
-    CAR_NAME,
-} from ".";
+import { ActiveDataType, AppContext, CAR_NAME } from ".";
 import { TABS_KEY } from "./TopCard";
 import StatsCard from "./StatsCard";
 
@@ -21,12 +14,33 @@ const TOPIC = {
 
 let counting = 0;
 
+type LaneCarDataType = {
+    a: string[];
+    b: string[];
+    c: string[];
+};
+
+let laneCarData: LaneCarDataType = {
+    a: [],
+    b: [],
+    c: [],
+};
+
+function removeCarFromLane(carName: string) {
+    const updatedLaneCarData = Object.fromEntries(
+        Object.entries(laneCarData).map(([key, values]) => [
+            key,
+            values.filter((value) => value !== carName),
+        ])
+    );
+
+    return updatedLaneCarData as LaneCarDataType;
+}
+
 export default function ContentCard() {
     const [apiNotification, contextHolder] = notification.useNotification();
-    const { activeTab, activeData, setActiveData, activeLane } =
+    const { activeTab, setActiveData, activeLane, refresh } =
         useContext(AppContext);
-    // const [activeData, setActiveData] =
-    //     useState<ActiveDataType>(ACTIVE_DATA_INITIAL);
 
     const [client, setClient] = useState<MqttClient>();
     useEffect(() => {
@@ -37,6 +51,36 @@ export default function ContentCard() {
 
         setClient(mClient);
     }, []);
+
+    useEffect(() => {
+        counting = 0;
+        laneCarData = {
+            a: [],
+            b: [],
+            c: [],
+        };
+        if (activeLane.a) {
+            laneCarData.a.push(CAR_NAME.RED);
+        }
+        if (activeLane.b) {
+            laneCarData.b.push(CAR_NAME.GREEN);
+        }
+        if (activeLane.c) {
+            laneCarData.c.push(CAR_NAME.BLUE);
+        }
+    }, [refresh]);
+
+    useEffect(() => {
+        if (!activeLane.a) {
+            laneCarData = removeCarFromLane(CAR_NAME.RED);
+        }
+        if (!activeLane.b) {
+            laneCarData = removeCarFromLane(CAR_NAME.GREEN);
+        }
+        if (!activeLane.c) {
+            laneCarData = removeCarFromLane(CAR_NAME.BLUE);
+        }
+    }, [activeLane]);
 
     useEffect(() => {
         if (!client) return;
@@ -68,78 +112,29 @@ export default function ContentCard() {
         if (!client) return;
 
         const handleReceivedMessage = (topic: string, message: Buffer) => {
-            console.log(activeLane);
+            console.log(
+                `Received message on topic ${topic}: ${message.toString()}`
+            );
+
             counting++;
             const eTime = message.toString();
 
-            function getCarName(
-                key: "a" | "b" | "c",
-                oldState: ActiveDataType
-            ) {
-                const itemData = oldState[key];
-
-                if (itemData.length === 0) {
-                    if (key === "a" && activeLane.a) {
-                        return CAR_NAME.RED;
-                    } else if (key === "b" && activeLane.b) {
-                        return CAR_NAME.GREEN;
-                    } else if (key === "c" && activeLane.c) {
-                        return CAR_NAME.BLUE;
-                    }
-                } else {
-                    const lastItem = itemData[itemData.length - 1];
-                    const prevCar = lastItem.car;
-
-                    if (prevCar === CAR_NAME.RED && activeLane.c) {
-                        return CAR_NAME.BLUE;
-                    } else if (prevCar === CAR_NAME.GREEN && activeLane.a) {
-                        return CAR_NAME.RED;
-                    } else if (prevCar === CAR_NAME.BLUE && activeLane.b) {
-                        return CAR_NAME.GREEN;
-                    }
-                }
-
-                // if(itemData.length % 3 === 0){
-                //     if (key === "a" && activeLane.a) {
-                //         return CAR_NAME.RED;
-                //     } else if (key === "b" && activeLane.b) {
-                //         return CAR_NAME.GREEN;
-                //     } else if (key === "c" && activeLane.c) {
-                //         return CAR_NAME.BLUE;
-                //     }
-                // }
-                // if(itemData.length % 2 === 0){
-                //     if (key === "a" && activeLane.a) {
-                //         return CAR_NAME.RED;
-                //     } else if (key === "b" && activeLane.b) {
-                //         return CAR_NAME.GREEN;
-                //     } else if (key === "c" && activeLane.c) {
-                //         return CAR_NAME.BLUE;
-                //     }
-                // }
-
-                let prevItemData: ActiveDataItemType[] = [];
-                if (key === "a") {
-                    prevItemData = oldState.c;
-                } else if (key === "b") {
-                    prevItemData = oldState.a;
-                } else if (key === "c") {
-                    prevItemData = oldState.b;
-                }
-
-                console.log(key, prevItemData);
-
-                if (prevItemData.length > 0) {
-                    const lastItem = prevItemData[prevItemData.length - 1];
-                    const activeCar = lastItem.car;
-
-                    if (activeCar === CAR_NAME.RED && activeLane.a) {
-                        return CAR_NAME.RED;
-                    } else if (activeCar === CAR_NAME.GREEN && activeLane.b) {
-                        return CAR_NAME.GREEN;
-                    } else if (activeCar === CAR_NAME.BLUE && activeLane.c) {
-                        return CAR_NAME.BLUE;
-                    }
+            function getCarName(key: "a" | "b" | "c") {
+                if (key === "a" && laneCarData.a.length > 0) {
+                    const carName = laneCarData.a[0];
+                    laneCarData.a.splice(0, 1);
+                    laneCarData.b.push(carName);
+                    return carName;
+                } else if (key === "b" && laneCarData.b.length > 0) {
+                    const carName = laneCarData.b[0];
+                    laneCarData.b.splice(0, 1);
+                    laneCarData.c.push(carName);
+                    return carName;
+                } else if (key === "c" && laneCarData.c.length > 0) {
+                    const carName = laneCarData.c[0];
+                    laneCarData.c.splice(0, 1);
+                    laneCarData.a.push(carName);
+                    return carName;
                 }
 
                 return CAR_NAME.YELLOW;
@@ -147,7 +142,8 @@ export default function ContentCard() {
 
             function getCurrentData(
                 key: "a" | "b" | "c",
-                oldState: ActiveDataType
+                oldState: ActiveDataType,
+                carName: string
             ) {
                 return {
                     ...oldState,
@@ -155,7 +151,7 @@ export default function ContentCard() {
                         ...oldState[key],
                         {
                             time: Number(eTime),
-                            car: getCarName(key, oldState),
+                            car: carName,
                             id: counting,
                         },
                     ],
@@ -163,15 +159,21 @@ export default function ContentCard() {
             }
 
             if (topic === TOPIC.A) {
-                setActiveData((oldState) => getCurrentData("a", oldState));
+                const carName = getCarName("a");
+                setActiveData((oldState) =>
+                    getCurrentData("a", oldState, carName)
+                );
             } else if (topic === TOPIC.B) {
-                setActiveData((oldState) => getCurrentData("b", oldState));
+                const carName = getCarName("b");
+                setActiveData((oldState) =>
+                    getCurrentData("b", oldState, carName)
+                );
             } else if (topic === TOPIC.C) {
-                setActiveData((oldState) => getCurrentData("c", oldState));
+                const carName = getCarName("c");
+                setActiveData((oldState) =>
+                    getCurrentData("c", oldState, carName)
+                );
             }
-            console.log(
-                `Received message on topic ${topic}: ${message.toString()}`
-            );
         };
 
         client.on("message", handleReceivedMessage);

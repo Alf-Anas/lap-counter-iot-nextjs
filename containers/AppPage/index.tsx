@@ -2,7 +2,6 @@ import MyLoading from "@/components/MyLoading";
 import TopCard, { TABS_KEY } from "./TopCard";
 import { Layout as LayoutANTD } from "antd";
 import React, {
-    ReactNode,
     createContext,
     useState,
     Dispatch,
@@ -62,6 +61,8 @@ interface AppContextType {
     setActiveTab: Dispatch<SetStateAction<string>>;
     activeData: ActiveDataType;
     setActiveData: Dispatch<SetStateAction<ActiveDataType>>;
+    refresh: number;
+    setRefresh: Dispatch<SetStateAction<number>>;
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -71,6 +72,8 @@ export const AppContext = createContext<AppContextType>({
     setActiveTab: () => {},
     activeData: ACTIVE_DATA_INITIAL,
     setActiveData: () => {},
+    refresh: new Date().getTime(),
+    setRefresh: () => {},
 });
 
 export default function AppPage() {
@@ -79,6 +82,7 @@ export default function AppPage() {
     const [activeTab, setActiveTab] = useState(TABS_KEY.LAPS);
     const [activeData, setActiveData] =
         useState<ActiveDataType>(ACTIVE_DATA_INITIAL);
+    const [refresh, setRefresh] = useState<number>(new Date().getTime());
 
     return (
         <LayoutANTD className="h-screen">
@@ -91,6 +95,8 @@ export default function AppPage() {
                     setActiveTab,
                     activeData,
                     setActiveData,
+                    refresh,
+                    setRefresh,
                 }}
             >
                 <MainHeader />
