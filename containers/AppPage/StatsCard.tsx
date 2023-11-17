@@ -2,6 +2,7 @@ import MainCard from "@/components/layout/MainCard";
 import { Col, Row, Tag } from "antd";
 import { ReactNode, useContext } from "react";
 import { AppContext, CAR_NAME, getCarColor } from ".";
+import { calculateAverage } from "@/utils";
 
 export const TABS_KEY = {
     LAPS: "LAPS",
@@ -65,6 +66,8 @@ export default function StatsCard() {
             .filter((item) => item.car === carName)
             .sort((itemA, itemB) => itemA.time - itemB.time);
 
+        const listSpeed: number[] = [];
+
         thisData.forEach((item, idx) => {
             const diffSecond = (item.time - lowestValue) / 1000;
             const prefDiffSecond =
@@ -72,12 +75,13 @@ export default function StatsCard() {
             const label = diffSecond.toFixed(3);
 
             if (idx !== 0) {
+                listSpeed.push(prefDiffSecond);
                 listLane.push(
                     <Tag
                         key={idx}
-                        className="rounded-none text-sm block text-end h-[22px]"
+                        className="rounded-none text-sm block text-start h-[22px]"
                     >
-                        {prefDiffSecond.toFixed(3)} ms
+                        {prefDiffSecond.toFixed(3)} s
                     </Tag>
                 );
             }
@@ -90,24 +94,36 @@ export default function StatsCard() {
                     {label}
                 </Tag>
             );
-
-            if (idx !== 0 && idx === thisData.length - 1) {
-                listLane.push(
-                    <Tag
-                        key={idx + "Y"}
-                        className="rounded-none text-sm block text-end h-[22px]"
-                    >
-                        -
-                    </Tag>,
-                    <Tag
-                        key={idx + "YY"}
-                        className="rounded-none text-sm block text-end h-[22px] font-bold"
-                    >
-                        μ : {(diffSecond / idx).toFixed(3)} ms
-                    </Tag>
-                );
-            }
         });
+
+        if (thisData.length > 1) {
+            listLane.push(
+                <Tag
+                    key="-"
+                    className="rounded-none text-sm block text-end h-[22px]"
+                >
+                    -
+                </Tag>,
+                <Tag
+                    key="avg"
+                    className="rounded-none text-sm block text-end h-[22px] font-bold"
+                >
+                    μ : {calculateAverage(listSpeed).toFixed(3)} s
+                </Tag>,
+                <Tag
+                    key="min"
+                    className="rounded-none text-sm block text-end h-[22px] font-bold"
+                >
+                    Min : {Math.min(...listSpeed).toFixed(3)} s
+                </Tag>,
+                <Tag
+                    key="max"
+                    className="rounded-none text-sm block text-end h-[22px] font-bold"
+                >
+                    Max : {Math.max(...listSpeed).toFixed(3)} s
+                </Tag>
+            );
+        }
 
         return listLane;
     }

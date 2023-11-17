@@ -43,3 +43,9 @@ export function getValObject(obj: any, key = "", defaultValue: any = "") {
     }
     return defaultValue;
 }
+
+export function calculateAverage(numbers: number[]) {
+    return numbers.length
+        ? numbers.reduce((total, num) => total + num, 0) / numbers.length
+        : 0;
+}
