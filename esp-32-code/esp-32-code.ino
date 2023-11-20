@@ -11,10 +11,10 @@ const char* mqtt_server = "test.mosquitto.org";
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-int INPUT_A = 12;
-int INPUT_B = 13;
-int INPUT_C = 14;
-int OUTPUT_LED = 25;
+int INPUT_A = 25;
+int INPUT_B = 26;
+int INPUT_C = 27;
+int OUTPUT_LED = 33;
 
 unsigned long lastDetectedA = 0;
 unsigned long lastDetectedB = 0;
@@ -23,7 +23,6 @@ unsigned long lastDetectedC = 0;
 char LANE_A[MSG_BUFFER_SIZE];
 char LANE_B[MSG_BUFFER_SIZE];
 char LANE_C[MSG_BUFFER_SIZE];
-
 
 
 
@@ -39,16 +38,17 @@ void setup() {
   client.setServer(mqtt_server, 1883);
 
 
-  digitalWrite(OUTPUT_LED, HIGH);
   Serial.println("=========== DONE ===========");
 }
 
 void loop() {
   if (!client.connected()) {
+    digitalWrite(OUTPUT_LED, LOW);
     reconnect();
+  } else{ 
+    digitalWrite(OUTPUT_LED, HIGH);
   }
   client.loop();
-
 
 
   int readA = digitalRead(INPUT_A);
@@ -58,7 +58,7 @@ void loop() {
 
   if (readA == LOW) {
     unsigned long now = millis();
-    if (now - lastDetectedA > 500) {
+    if (now - lastDetectedA > 300) {
       lastDetectedA = now;
 
       String unixTime = getUnixTime();
@@ -71,7 +71,7 @@ void loop() {
   }
   if (readB == LOW) {
     unsigned long now = millis();
-    if (now - lastDetectedB > 500) {
+    if (now - lastDetectedB > 300) {
       lastDetectedB = now;
 
       String unixTime = getUnixTime();
@@ -84,7 +84,7 @@ void loop() {
   }
   if (readC == LOW) {
     unsigned long now = millis();
-    if (now - lastDetectedC > 500) {
+    if (now - lastDetectedC > 300) {
       lastDetectedC = now;
 
       String unixTime = getUnixTime();

@@ -112,13 +112,13 @@ export default function StatsCard() {
                 </Tag>,
                 <Tag
                     key="min"
-                    className="rounded-none text-sm block text-end h-[22px] font-bold"
+                    className="rounded-none text-sm block text-end h-[22px]"
                 >
                     Min : {Math.min(...listSpeed).toFixed(3)} s
                 </Tag>,
                 <Tag
                     key="max"
-                    className="rounded-none text-sm block text-end h-[22px] font-bold"
+                    className="rounded-none text-sm block text-end h-[22px]"
                 >
                     Max : {Math.max(...listSpeed).toFixed(3)} s
                 </Tag>

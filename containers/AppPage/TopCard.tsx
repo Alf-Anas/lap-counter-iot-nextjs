@@ -15,6 +15,19 @@ export default function TopCard() {
 
     return (
         <MainCard className="text-center !p-2 justify-between flex">
+            <Popconfirm
+                title="Clear Data"
+                description="Clear data dan record ulang?"
+                onConfirm={() => {
+                    setActiveData(ACTIVE_DATA_INITIAL);
+                    setRefresh(new Date().getTime());
+                }}
+                okText="Yes"
+                cancelText="No"
+                placement="bottomRight"
+            >
+                <Button danger size="large" icon={<UndoOutlined />} />
+            </Popconfirm>
             <Radio.Group
                 buttonStyle="outline"
                 size="large"
@@ -29,19 +42,6 @@ export default function TopCard() {
                     Stats
                 </Radio.Button>
             </Radio.Group>
-            <Popconfirm
-                title="Clear Data"
-                description="Clear data dan record ulang?"
-                onConfirm={() => {
-                    setActiveData(ACTIVE_DATA_INITIAL);
-                    setRefresh(new Date().getTime());
-                }}
-                okText="Yes"
-                cancelText="No"
-                placement="bottomRight"
-            >
-                <Button danger size="large" icon={<UndoOutlined />} />
-            </Popconfirm>
         </MainCard>
     );
 }
