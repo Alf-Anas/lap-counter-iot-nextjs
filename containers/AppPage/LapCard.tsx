@@ -1,12 +1,19 @@
 import MainCard from "@/components/layout/MainCard";
 import { Col, Row, Tag } from "antd";
-import { ReactNode, useContext } from "react";
-import { AppContext, CAR_NAME, getCarColor } from ".";
-import { calculateAverage, filterDataByLap } from "@/utils";
+import { ReactNode } from "react";
+import { ActiveDataType } from ".";
+import {
+    CAR_NAME,
+    calculateAverage,
+    filterDataByLap,
+    getCarColor,
+} from "@/utils";
 
-export default function LapCard() {
-    const { activeData } = useContext(AppContext);
-
+export default function LapCard({
+    activeData,
+}: {
+    activeData: ActiveDataType;
+}) {
     const allItem = Object.values(activeData).flatMap((itemArray) =>
         itemArray.map((item) => item)
     );

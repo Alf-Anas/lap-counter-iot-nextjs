@@ -1,11 +1,12 @@
 import { notification } from "antd";
 import mqtt, { MqttClient } from "mqtt";
 import { useContext, useEffect, useState } from "react";
-import { ActiveDataType, AppContext, CAR_NAME } from ".";
+import { ActiveDataType, AppContext } from ".";
 import { TABS_KEY } from "./TopCard";
 import TrackCard from "./TrackCard";
 import LaneCard from "./LaneCard";
 import LapCard from "./LapCard";
+import { CAR_NAME } from "@/utils";
 
 const TOPIC = {
     A: "/geoit.dev/lap-counter/a",
@@ -58,7 +59,7 @@ function findAndAddCarToLane(carName: string) {
 
 export default function ContentCard() {
     const [apiNotification, contextHolder] = notification.useNotification();
-    const { activeTab, setActiveData, activeLane, refresh } =
+    const { activeTab, setActiveData, activeLane, refresh, activeData } =
         useContext(AppContext);
 
     const [client, setClient] = useState<MqttClient>();
@@ -210,9 +211,13 @@ export default function ContentCard() {
     return (
         <>
             {contextHolder}
-            {activeTab === TABS_KEY.TRACK && <TrackCard />}
-            {activeTab === TABS_KEY.LANE && <LaneCard />}
-            {activeTab === TABS_KEY.LAP && <LapCard />}
+            {activeTab === TABS_KEY.TRACK && (
+                <TrackCard activeData={activeData} />
+            )}
+            {activeTab === TABS_KEY.LANE && (
+                <LaneCard activeData={activeData} />
+            )}
+            {activeTab === TABS_KEY.LAP && <LapCard activeData={activeData} />}
         </>
     );
 }

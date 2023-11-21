@@ -34,27 +34,7 @@ export type ActiveDataItemType = {
 const ACTIVE_LANE_INITIAL: ActiveLaneType = { a: true, b: true, c: true };
 export const ACTIVE_DATA_INITIAL: ActiveDataType = { a: [], b: [], c: [] };
 
-export const CAR_NAME = {
-    RED: "RED",
-    GREEN: "GREEN",
-    BLUE: "BLUE",
-    YELLOW: "YELLOW",
-};
-
-export function getCarColor(car: string) {
-    switch (car) {
-        case CAR_NAME.RED:
-            return "red";
-        case CAR_NAME.GREEN:
-            return "green";
-        case CAR_NAME.BLUE:
-            return "blue";
-        default:
-            return "yellow";
-    }
-}
-
-interface AppContextType {
+export interface AppContextType {
     activeLane: ActiveLaneType;
     setActiveLane: Dispatch<SetStateAction<ActiveLaneType>>;
     activeTab: string;

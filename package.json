@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "@ant-design/icons": "^5.2.6",
+        "@vercel/postgres": "^0.5.1",
         "antd": "^5.11.0",
         "moment": "^2.29.4",
         "mqtt": "^5.2.2",

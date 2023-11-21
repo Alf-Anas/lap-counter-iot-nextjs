@@ -1,4 +1,11 @@
+import {
+    CarDataType,
+    HistoryListType,
+    HistoryType,
+    TimeDataType,
+} from "@/types/history.interface";
 import { ObjectLiteral } from "@/types/object-literal.type";
+import moment from "moment";
 
 export function safeArray<T = ObjectLiteral>(arr: any, defaultValue = []) {
     if (Array.isArray(arr) && arr.length > 0) {
@@ -52,4 +59,95 @@ export function calculateAverage(numbers: number[]) {
 
 export function filterDataByLap<T>(data: T[], step = 3): T[] {
     return data.filter((_, index) => index % step === 0);
+}
+
+export function momentLocalDate(isoDate: string) {
+    const eDate = moment(isoDate).format("DD-MM-YYYY HH:mm:ss");
+
+    return eDate;
+}
+
+const updateCarNames = (
+    data: CarDataType[],
+    history: HistoryType
+): CarDataType[] => {
+    return data.map((item) => {
+        switch (item.car) {
+            case "RED":
+                return {
+                    ...item,
+                    car: history.car_a || "RED",
+                    root_id: history.id,
+                    created_at: history.created_at,
+                };
+            case "GREEN":
+                return {
+                    ...item,
+                    car: history.car_b || "GREEN",
+                    root_id: history.id,
+                    created_at: history.created_at,
+                };
+            case "BLUE":
+                return {
+                    ...item,
+                    car: history.car_c || "BLUE",
+                    root_id: history.id,
+                    created_at: history.created_at,
+                };
+            default:
+                return {
+                    ...item,
+                    root_id: history.id,
+                    created_at: history.created_at,
+                };
+        }
+    });
+};
+
+const splitDataByCarName = (data: CarDataType[]): CarDataType[][] => {
+    const groupedData: Record<string, CarDataType[]> = {};
+
+    data.forEach((item) => {
+        const carName = item.car;
+        if (!groupedData[carName]) {
+            groupedData[carName] = [];
+        }
+        groupedData[carName].push(item);
+    });
+
+    return Object.values(groupedData);
+};
+
+export function normalizeRecordData(historyList: HistoryListType) {
+    const eList: CarDataType[][] = [];
+    historyList.forEach((history) => {
+        const allItem = Object.values(history.record).flatMap((itemArray) =>
+            itemArray.map((item: TimeDataType) => item)
+        );
+        const newNames = updateCarNames(allItem, history);
+        const splitByCar = splitDataByCarName(newNames);
+        eList.push(...splitByCar);
+    });
+
+    return eList;
+}
+
+export const CAR_NAME = {
+    RED: "RED",
+    GREEN: "GREEN",
+    BLUE: "BLUE",
+    YELLOW: "YELLOW",
+};
+
+export function getCarColor(car: string) {
+    switch (car) {
+        case CAR_NAME.RED:
+            return "red";
+        case CAR_NAME.GREEN:
+            return "green";
+        case CAR_NAME.BLUE:
+            return "blue";
+        default:
+            return "yellow";
+    }
 }

@@ -1,12 +1,16 @@
 import MainCard from "@/components/layout/MainCard";
 import { Col, Divider, Row, Tag } from "antd";
-import { ReactNode, useContext, useEffect, useRef } from "react";
-import { AppContext, getCarColor } from ".";
+import { ReactNode, useEffect, useRef } from "react";
+import { ActiveDataType } from ".";
+import { getCarColor } from "@/utils";
 
 const MULTIPLY_PIXEL = 30;
 
-export default function TrackCard() {
-    const { activeData } = useContext(AppContext);
+export default function TrackCard({
+    activeData,
+}: {
+    activeData: ActiveDataType;
+}) {
     const bottomContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -51,7 +55,7 @@ export default function TrackCard() {
     return (
         <MainCard className="text-start">
             <Divider className="!m-0 !p-0 !mb-[30px]">Start</Divider>
-            <Row gutter={[0, 0]} className="min-h-[50vh]">
+            <Row gutter={[0, 0]} className="min-h-[40vh]">
                 <Col span={8} className="text-center">
                     {getLane("a")}
                 </Col>
