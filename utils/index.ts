@@ -49,3 +49,7 @@ export function calculateAverage(numbers: number[]) {
         ? numbers.reduce((total, num) => total + num, 0) / numbers.length
         : 0;
 }
+
+export function filterDataByLap<T>(data: T[], step = 3): T[] {
+    return data.filter((_, index) => index % step === 0);
+}

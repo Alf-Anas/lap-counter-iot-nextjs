@@ -1,5 +1,4 @@
 import MainCard from "@/components/layout/MainCard";
-import MyImage from "@/components/preview/MyImage";
 import { Button, Divider, Image, Typography } from "antd";
 import { useRouter } from "next/navigation";
 
@@ -23,18 +22,18 @@ export default function TutorialCard() {
                     Alat ini menggunakan Wifi untuk terhubung dengan internet,
                     sehinga pastikan Anda sudah membuat Wifi dengan konfigurasi
                     sebagai berikut :
-                    <ul>
-                        <li>
-                            Nama SSID : <b>LAP_COUNTER</b>
-                        </li>
-                        <li>
-                            Password : <b>abcd1234</b>
-                        </li>
-                        <li>
-                            Network Band : <b>2.4 GHz</b>
-                        </li>
-                    </ul>
                 </p>
+                <ul>
+                    <li>
+                        Nama SSID : <b>LAP_COUNTER</b>
+                    </li>
+                    <li>
+                        Password : <b>abcd1234</b>
+                    </li>
+                    <li>
+                        Network Band : <b>2.4 GHz</b>
+                    </li>
+                </ul>
                 <Image
                     alt="Hotspot"
                     src="/img/tutorial/hotspot.jpg"

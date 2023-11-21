@@ -5,7 +5,7 @@ import { AppContext, getCarColor } from ".";
 
 const MULTIPLY_PIXEL = 30;
 
-export default function LapsCard() {
+export default function TrackCard() {
     const { activeData } = useContext(AppContext);
     const bottomContainerRef = useRef<HTMLDivElement>(null);
 

@@ -4,12 +4,7 @@ import { ReactNode, useContext } from "react";
 import { AppContext, CAR_NAME, getCarColor } from ".";
 import { calculateAverage } from "@/utils";
 
-export const TABS_KEY = {
-    LAPS: "LAPS",
-    STATS: "STATS",
-};
-
-export default function StatsCard() {
+export default function LaneCard() {
     const { activeData } = useContext(AppContext);
 
     const allItem = Object.values(activeData).flatMap((itemArray) =>
@@ -132,7 +127,7 @@ export default function StatsCard() {
         <MainCard className="text-center">
             <Row gutter={[0, 0]} className="min-h-[50vh]">
                 <Col span={3}>
-                    <Tag className="text-base block text-center">LAP</Tag>
+                    <Tag className="text-base block text-center">LN</Tag>
                     {getLapMax()}
                 </Col>
                 <Col span={7}>

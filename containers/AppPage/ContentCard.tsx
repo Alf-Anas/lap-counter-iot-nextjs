@@ -1,10 +1,11 @@
 import { notification } from "antd";
 import mqtt, { MqttClient } from "mqtt";
 import { useContext, useEffect, useState } from "react";
-import LapsCard from "./LapsCard";
 import { ActiveDataType, AppContext, CAR_NAME } from ".";
 import { TABS_KEY } from "./TopCard";
-import StatsCard from "./StatsCard";
+import TrackCard from "./TrackCard";
+import LaneCard from "./LaneCard";
+import LapCard from "./LapCard";
 
 const TOPIC = {
     A: "/geoit.dev/lap-counter/a",
@@ -209,8 +210,9 @@ export default function ContentCard() {
     return (
         <>
             {contextHolder}
-            {activeTab === TABS_KEY.LAPS && <LapsCard />}
-            {activeTab === TABS_KEY.STATS && <StatsCard />}
+            {activeTab === TABS_KEY.TRACK && <TrackCard />}
+            {activeTab === TABS_KEY.LANE && <LaneCard />}
+            {activeTab === TABS_KEY.LAP && <LapCard />}
         </>
     );
 }

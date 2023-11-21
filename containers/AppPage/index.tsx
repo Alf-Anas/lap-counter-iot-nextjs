@@ -68,7 +68,7 @@ interface AppContextType {
 export const AppContext = createContext<AppContextType>({
     activeLane: ACTIVE_LANE_INITIAL,
     setActiveLane: () => {},
-    activeTab: TABS_KEY.LAPS,
+    activeTab: TABS_KEY.TRACK,
     setActiveTab: () => {},
     activeData: ACTIVE_DATA_INITIAL,
     setActiveData: () => {},
@@ -79,7 +79,7 @@ export const AppContext = createContext<AppContextType>({
 export default function AppPage() {
     const [activeLane, setActiveLane] =
         useState<ActiveLaneType>(ACTIVE_LANE_INITIAL);
-    const [activeTab, setActiveTab] = useState(TABS_KEY.LAPS);
+    const [activeTab, setActiveTab] = useState(TABS_KEY.TRACK);
     const [activeData, setActiveData] =
         useState<ActiveDataType>(ACTIVE_DATA_INITIAL);
     const [refresh, setRefresh] = useState<number>(new Date().getTime());

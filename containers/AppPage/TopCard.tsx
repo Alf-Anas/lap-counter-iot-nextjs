@@ -5,8 +5,9 @@ import { useContext } from "react";
 import { ACTIVE_DATA_INITIAL, AppContext } from ".";
 
 export const TABS_KEY = {
-    LAPS: "LAPS",
-    STATS: "STATS",
+    TRACK: "TRACK",
+    LANE: "LANE",
+    LAP: "LAP",
 };
 
 export default function TopCard() {
@@ -35,11 +36,14 @@ export default function TopCard() {
                 value={activeTab}
                 onChange={(e) => setActiveTab(e.target.value)}
             >
-                <Radio.Button value={TABS_KEY.LAPS} className="w-1/2">
-                    Laps
+                <Radio.Button value={TABS_KEY.TRACK} className="w-1/3">
+                    Track
                 </Radio.Button>
-                <Radio.Button value={TABS_KEY.STATS} className="w-1/2">
-                    Stats
+                <Radio.Button value={TABS_KEY.LANE} className="w-1/3">
+                    Lane
+                </Radio.Button>
+                <Radio.Button value={TABS_KEY.LAP} className="w-1/3">
+                    Lap
                 </Radio.Button>
             </Radio.Group>
         </MainCard>
