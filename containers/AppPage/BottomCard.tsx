@@ -36,24 +36,33 @@ export default function BottomCard() {
         }
     }
 
-    function showSaveButton() {
-        if (
-            activeData.a.length < 4 &&
-            activeData.b.length < 4 &&
-            activeData.b.length < 4
-        ) {
-            return false;
-        }
+    function getListCar() {
         const allItem = Object.values(activeData).flatMap((itemArray) =>
             itemArray.map((item) => item)
         );
+
+        const redCar = allItem.filter((item) => item.car === CAR_NAME.RED);
+        const greenCar = allItem.filter((item) => item.car === CAR_NAME.GREEN);
+        const blueCar = allItem.filter((item) => item.car === CAR_NAME.BLUE);
+
         const noneCar = allItem.filter(
             (item) =>
                 item.car !== CAR_NAME.RED &&
                 item.car !== CAR_NAME.GREEN &&
                 item.car !== CAR_NAME.BLUE
         );
-        if (noneCar.length > 0) {
+
+        return { none: noneCar, red: redCar, green: greenCar, blue: blueCar };
+    }
+
+    const { none, red, green, blue } = getListCar();
+
+    function showSaveButton() {
+        if (red.length < 4 && green.length < 4 && blue.length < 4) {
+            return false;
+        }
+
+        if (none.length > 0) {
             return false;
         }
         return true;
@@ -72,7 +81,7 @@ export default function BottomCard() {
                     title="Save Data"
                     footer={null}
                 >
-                    {activeData.a.length > 0 && (
+                    {red.length > 0 && (
                         <Form.Item label="Car A">
                             <Input
                                 value={carName.a}
@@ -85,7 +94,7 @@ export default function BottomCard() {
                             />
                         </Form.Item>
                     )}
-                    {activeData.b.length > 0 && (
+                    {green.length > 0 && (
                         <Form.Item label="Car B">
                             <Input
                                 value={carName.b}
@@ -98,7 +107,7 @@ export default function BottomCard() {
                             />
                         </Form.Item>
                     )}
-                    {activeData.c.length > 0 && (
+                    {blue.length > 0 && (
                         <Form.Item label="Car C">
                             <Input
                                 value={carName.c}
