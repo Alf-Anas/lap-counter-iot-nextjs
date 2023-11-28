@@ -35,7 +35,7 @@ export const HistoryContext = createContext<HistoryContextType>({
 
 export default function HistoryPage() {
     const [historyList, setHistoryList] = useState<HistoryListType>([]);
-    const [activeTab, setActiveTab] = useState(TABS_KEY.HISTORY);
+    const [activeTab, setActiveTab] = useState(TABS_KEY.RANK);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {

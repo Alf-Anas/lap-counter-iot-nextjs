@@ -64,7 +64,11 @@ export default function RankCard() {
                             title={`${idx + 1}. ${
                                 item.name
                             } - ${momentLocalDate(item.created_at)}`}
-                            extra={<a href={`/history/${item.id}`}>Detail</a>}
+                            extra={
+                                <a target="_blank" href={`/history/${item.id}`}>
+                                    Detail
+                                </a>
+                            }
                             className="mb-3"
                         >
                             <Typography.Title
@@ -130,7 +134,11 @@ export default function RankCard() {
                             title={`${idx + 1}. ${
                                 item.name
                             } - ${momentLocalDate(item.created_at)}`}
-                            extra={<a href={`/history/${item.id}`}>Detail</a>}
+                            extra={
+                                <a target="_blank" href={`/history/${item.id}`}>
+                                    Detail
+                                </a>
+                            }
                             className="mb-3"
                         >
                             <Typography.Title
@@ -179,7 +187,11 @@ export default function RankCard() {
                             title={`${idx + 1}. ${
                                 item.name
                             } - ${momentLocalDate(item.created_at)}`}
-                            extra={<a href={`/history/${item.id}`}>Detail</a>}
+                            extra={
+                                <a target="_blank" href={`/history/${item.id}`}>
+                                    Detail
+                                </a>
+                            }
                             className="mb-3"
                         >
                             <Typography.Title

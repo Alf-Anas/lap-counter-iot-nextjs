@@ -1,6 +1,17 @@
-import { Button, Layout as LayoutANTD, Typography } from "antd";
+import {
+    Button,
+    Dropdown,
+    Layout as LayoutANTD,
+    MenuProps,
+    Typography,
+} from "antd";
 import MyImage from "../preview/MyImage";
-import { AppstoreOutlined } from "@ant-design/icons";
+import {
+    AppstoreOutlined,
+    HomeOutlined,
+    StarOutlined,
+    VideoCameraOutlined,
+} from "@ant-design/icons";
 import { useRouter, usePathname } from "next/navigation";
 
 const { Header: HeaderANTD } = LayoutANTD;
@@ -8,17 +19,42 @@ const { Header: HeaderANTD } = LayoutANTD;
 export default function MainHeader() {
     const router = useRouter();
     const pathname = usePathname();
-    function onGoTo() {
-        if (pathname === "/") {
-            router.push("/app");
-        } else if (pathname === "/app") {
-            router.push("/history");
-        } else if (pathname === "/history") {
-            router.push("/app");
-        } else {
-            router.push("/history");
-        }
-    }
+
+    const items: MenuProps["items"] = [
+        {
+            key: "1",
+            label: (
+                <Button
+                    icon={<HomeOutlined />}
+                    onClick={() => router.push("/")}
+                >
+                    Tutorial
+                </Button>
+            ),
+        },
+        {
+            key: "2",
+            label: (
+                <Button
+                    icon={<VideoCameraOutlined />}
+                    onClick={() => router.push("/app")}
+                >
+                    Counter
+                </Button>
+            ),
+        },
+        {
+            key: "3",
+            label: (
+                <Button
+                    icon={<StarOutlined />}
+                    onClick={() => router.push("/history")}
+                >
+                    Ranking
+                </Button>
+            ),
+        },
+    ];
 
     return (
         <HeaderANTD className="bg-primary-color py-4 px-6 z-[5] h-min shadow-sm">
@@ -34,12 +70,9 @@ export default function MainHeader() {
                         Mini 4WD Lap Counter
                     </Typography.Text>
                 </div>
-                <Button
-                    type="primary"
-                    size="large"
-                    icon={<AppstoreOutlined />}
-                    onClick={onGoTo}
-                />
+                <Dropdown menu={{ items }} placement="bottomRight">
+                    <Button icon={<AppstoreOutlined />} />
+                </Dropdown>
             </div>
         </HeaderANTD>
     );

@@ -17,7 +17,11 @@ export default function HistoryCard() {
                         key={idx}
                         size="small"
                         title={momentLocalDate(item.created_at)}
-                        extra={<a href={`/history/${item.id}`}>Detail</a>}
+                        extra={
+                            <a target="_blank" href={`/history/${item.id}`}>
+                                Detail
+                            </a>
+                        }
                         className="mb-3"
                     >
                         {item.car_a && (

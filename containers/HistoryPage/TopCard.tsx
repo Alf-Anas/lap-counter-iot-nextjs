@@ -20,11 +20,11 @@ export default function TopCard() {
                 value={activeTab}
                 onChange={(e) => setActiveTab(e.target.value)}
             >
+                <Radio.Button value={TABS_KEY.RANK} className="w-1/2">
+                    Ranking
+                </Radio.Button>
                 <Radio.Button value={TABS_KEY.HISTORY} className="w-1/2">
                     History
-                </Radio.Button>
-                <Radio.Button value={TABS_KEY.RANK} className="w-1/2">
-                    Rank
                 </Radio.Button>
             </Radio.Group>
         </MainCard>
